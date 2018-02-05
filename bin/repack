@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ -e output/image/system.img ]
+then
+    if [ $# -eq 1 ]
+    then
+        sync
+        echo "Converting back system.img to system.PARTITION..."
+        rm output/image/system.PARTITION
+        bin/img2simg output/image/system.img output/image/system.PARTITION
+
+        echo "Packing image to $1..."
+        bin/aml_image_v2_packer -r output/image/image.cfg output/image $1
+
+        echo "Done"
+    else
+        echo "Usage: repack [output image]"
+    fi
+else
+    echo "Please unpack an image before trying to repack it"
+fi
+

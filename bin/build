@@ -1,0 +1,13 @@
+#!/bin/sh
+
+./bin/cleanup
+
+mkdir -p output/system
+mkdir -p output/image
+
+make -C bin/src/simg2img/
+
+cp bin/src/simg2img/simg2img bin/
+cp bin/src/simg2img/img2simg bin/
+
+echo "Build done"

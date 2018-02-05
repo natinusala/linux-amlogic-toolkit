@@ -1,0 +1,12 @@
+#!/bin/sh
+
+sudo umount output/system
+
+rm -rf output
+
+rm bin/simg2img
+rm bin/img2simg
+
+make -C bin/src/simg2img/ clean
+
+echo "Cleanup done"

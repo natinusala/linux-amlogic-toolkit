@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo "Unmounting system image..."
+sync
+sudo umount output/system
+
+echo "Done"

@@ -1,0 +1,4 @@
+*.img
+output
+bin/simg2img
+bin/img2simg
