@@ -6,8 +6,12 @@ then
     then
         sync
         echo "Converting back system.img to system.PARTITION..."
-        rm output/image/system.PARTITION
+        rm -f output/image/system.PARTITION
         bin/img2simg output/image/system.img output/image/system.PARTITION
+
+        echo "Repacking logo..."
+        rm -f output/image/logo.PARTITION
+        bin/logo_img_packer -r output/logo output/image/logo.PARTITION
 
         echo "Packing image to $1..."
         bin/aml_image_v2_packer -r output/image/image.cfg output/image $1

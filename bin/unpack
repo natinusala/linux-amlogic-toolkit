@@ -11,6 +11,7 @@ then
             rm -rf output
             mkdir -p output/system
             mkdir -p output/image
+            mkdir -p output/logo
 
             echo "Unpacking image $1..."
             bin/aml_image_v2_packer -d $1 output/image
@@ -23,6 +24,9 @@ then
 
             echo "Setting permissions..."
             sudo chmod -R 777 output/system
+
+            echo "Unpacking logo..."
+            bin/logo_img_packer -d output/image/logo.PARTITION output/logo
 
             echo "Done"
         else

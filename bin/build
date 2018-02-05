@@ -4,6 +4,7 @@
 
 mkdir -p output/system
 mkdir -p output/image
+mkdir -p output/logo
 
 make -C bin/src/simg2img/
 
