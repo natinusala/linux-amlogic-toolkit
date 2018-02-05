@@ -4,7 +4,7 @@ Allows to unpack and repack AMLogic Android images on Linux systems without usin
 
 # Features
 * Unpack and repack any image
-* Mount and edit system partition files
+* Mount and edit `system` partition
 * Unpack and repack `logo` partition (for bootup and upgrading logos)
 * Works for Android 7
 * No need to unpack the image each time you want to use the tool
