@@ -6,7 +6,7 @@ Allows to unpack and repack AMLogic Android images on Linux systems without usin
 * Unpack and repack any image
 * Mount and edit `system` partition
 * Unpack and repack `logo` partition (for bootup and upgrading logos)
-* "Burn" a SD Card for USB-less installation
+* *(WIP)* "Burn" a SD Card for USB-less installation
 * Works for Android 7
 * No need to unpack the image each time you want to use the tool
 
@@ -24,7 +24,7 @@ Allows to unpack and repack AMLogic Android images on Linux systems without usin
     * If you happen to loose the `output/system` mounting point (after a reboot for instance), just run `./bin/remount` to mount it again
     * On the other hand, you can unmount the system partition using `./bin/unmount`
 * When you have finished editing the files, run `./bin/repack output.img` to repack the image to `output.img`
-* You can "burn" the image to a mounted SD Card by running `./bin/burn_sdcard image.img sdcard_directory` (this will copy the required `img`, `ini` and `UBOOT` files) 
+* *(WIP)* You can "burn" the image to a mounted SD Card by running `./bin/burn_sdcard image.img sdcard_directory` (this will copy the required `img`, `ini` and `UBOOT` files) 
 * Done !
 
 # Credits
