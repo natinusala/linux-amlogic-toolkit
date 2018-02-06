@@ -4,8 +4,9 @@ sudo umount output/system
 
 rm -rf output
 
-rm bin/simg2img
-rm bin/img2simg
+rm -f bin/simg2img
+rm -f bin/img2simg
+rm -f bin/aml_image_extractor
 
 make -C bin/src/simg2img/ clean
 
