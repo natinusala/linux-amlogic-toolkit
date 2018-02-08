@@ -22,6 +22,7 @@ Allows to unpack and repack AMLogic Android images on Linux systems without usin
     * Note that the `system.PARTITION` and `logo.PARTITION` files will be replaced when repacking
     * If you happen to loose the `output/system` mounting point (after a reboot for instance), just run `./bin/remount` to mount it again
     * On the other hand, you can unmount the system partition using `./bin/unmount`
+* **Just be careful not to break everything by chmod'ing the whole `output/system` folder, because it will be replicated in the image and it won't boot !**
 * When you have finished editing the files, run `./bin/repack output.img` to repack the image to `output.img`
 * Done !
 
