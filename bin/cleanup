@@ -3,6 +3,7 @@
 sudo umount output/system
 
 rm -rf output
+rm -rf tmp
 
 rm -f bin/simg2img
 rm -f bin/img2simg

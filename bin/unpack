@@ -22,9 +22,6 @@ then
             echo "Mounting system image..."
             sudo mount -t ext4 -o loop,rw output/image/system.img output/system
 
-            echo "Setting permissions..."
-            sudo chmod -R 777 output/system
-
             echo "Unpacking logo..."
             bin/logo_img_packer -d output/image/logo.PARTITION output/logo
 
