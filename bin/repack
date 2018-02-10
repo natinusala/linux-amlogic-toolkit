@@ -16,6 +16,8 @@ then
         echo "Packing image to $1..."
         bin/aml_image_v2_packer -r output/image/image.cfg output/image $1
 
+	sync
+
         echo "Done"
     else
         echo "Usage: repack [output image]"
