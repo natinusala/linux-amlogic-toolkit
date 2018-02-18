@@ -31,7 +31,6 @@ Allows to unpack and repack AMLogic Android images on Linux systems without usin
 * Thanks to Magendanz and adg for the unpacking and repacking method
 * https://github.com/khadas/utils for the `aml_image_v2_packer` and `logo_img_packer` binaries
 * https://github.com/anestisb/android-simg2img for the `simg2img` tool
-* https://www.cnx-software.com/2016/11/19/how-to-create-a-bootable-recovery-sd-card-for-amlogic-tv-boxes/ for the SD Card "burning" tool
 
 
 
