@@ -39,6 +39,7 @@ Allows to unpack and repack AMLogic Android images on Linux systems without usin
 * **Be careful :**
     * Don't break everything by chmod'ing the whole `output/system` folder, because it will be replicated in the image and it won't boot !
     * Don't rename the files in `output/boot.img`
+    * If you extract and recreate the `initrd` ramdisk, its size will change and it will most likely break the boot image. To fix this, edit the `bootimg.cfg` file in `output/boot` to replicate the change in size (you can repack the image, let it fail and read the logs to see the new size).
 * When you have finished editing the files, run `./bin/repack output.img` to repack the image to `output.img`
 * Done !
 
