@@ -11,7 +11,7 @@ Allows to unpack and repack AMLogic Android images on Linux systems without usin
 * No need to unpack the image each time you want to use the tool
 
 # What it cannot do (yet)
-* Edit other partitions of the image such as `recovery` or `boot` (you can still replace the `PARTITION` files by hand)
+* Edit other partitions of the image such as `recovery` (you can still replace the `PARTITION` files by hand)
 
 # Dependencies
 * `libblkid-dev` for unpacking and repacking `boot.img`
