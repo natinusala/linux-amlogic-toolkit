@@ -1,0 +1,16 @@
+#!/bin/sh
+if [ -e output/image/system.img ]
+then
+	rm -rf output/initrd
+	mkdir -p output/initrd
+	
+	echo "Extracting initrd ramdisk..."
+	cd output/initrd
+	cat ../boot/initrd.img | gunzip | cpio -vid
+	cd ../..
+
+	echo "Done"
+	echo "Please note that the boot image size may have changed ; if repacking the image fails, look at the logs and edit the bootimg.cfg file to reflect the size change"
+else
+	echo "Please unpack an image before trying to extract initrd"
+fi

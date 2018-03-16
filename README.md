@@ -6,7 +6,7 @@ Allows to unpack and repack AMLogic Android images on Linux systems without usin
 * Unpack and repack any image
 * Mount and edit `system` partition
 * Unpack and repack `logo` partition (for bootup and upgrading logos)
-* Unpack and repack `boot` image
+* Unpack and repack `boot` image and `initrd` ramdisk
 * Works for Android 7
 * No need to unpack the image each time you want to use the tool
 
@@ -28,9 +28,14 @@ Allows to unpack and repack AMLogic Android images on Linux systems without usin
     * `output/logo` : logo partition files
     * `output/boot` : boot partition files
 * From now on you can edit the files of the `output` directory
-    * Note that the `system.PARTITION`, `boot.PARTITION`, `logo.PARTITION` files will be replaced when repacking
+    * Note that those files will be overwritten when repacking :
+        * `output/image/system.PARTITION`
+        * `output/image/boot.PARTITION`
+        * `output/image/logo.PARTITION`
+        * `output/boot/initrd.img` if using `./bin/extract_initrd`
     * If you happen to loose the `output/system` mounting point (after a reboot for instance), just run `./bin/remount` to mount it again
     * On the other hand, you can unmount the system partition using `./bin/unmount`
+    * If you want to extract the `initrd` ramdisk, use the `./bin/extract_initrd` and `./bin/recreate_initrd` scripts (output in `output/initrd`)
 * **Be careful :**
     * Don't break everything by chmod'ing the whole `output/system` folder, because it will be replicated in the image and it won't boot !
     * Don't rename the files in `output/boot.img`

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ -e output/initrd ]
+then
+	echo "Recreating initrd ramdisk..."
+	rm -f output/boot/initrd.img
+	cd output/initrd 
+	find . | cpio --create --format='newc' | gzip > ../boot/initrd.img
+	cd ../..
+	
+	echo "Done"
+else
+    echo "Please extract initrd before trying to recreate it"
+fi
