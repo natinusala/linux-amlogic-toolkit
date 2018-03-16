@@ -1,0 +1,47 @@
+This package was debianized by Heiko Stuebner <mmind@debian.org> on
+Sat, 12 Feb 2011 10:44:12 +0100.
+
+It was downloaded from http://gitorious.org/ac100/abootimg
+
+Upstream Author:
+
+    Gilles Grandou <gilles@grandou.net>
+
+Copyright:
+
+    Copyright (c) 2010 Gilles Grandou <gilles@grandou.net>
+
+License:
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+  On Debian systems, the complete text of the GNU Library
+  General Public License can be found in `/usr/share/common-licenses/GPL-2'.
+
+  except bootimg.h
+
+    Copyright 2007, The Android Open Source Project
+
+    Licensed under the Apache License, Version 2.0 (the "License"); 
+    you may not use this file except in compliance with the License. 
+    You may obtain a copy of the License at 
+
+  On Debian systems, the complete text of the Apache License Version 2.0
+  can be found in `/usr/share/common-licenses/Apache-2.0'.
+
+
+The Debian packaging is copyright 2011, Heiko Stuebner <mmind@debian.org> and
+is licensed under the GPL version 2, or (at your option) any later version,
+see `/usr/share/common-licenses/GPL-2'.

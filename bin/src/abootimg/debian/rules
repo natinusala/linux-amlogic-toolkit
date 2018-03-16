@@ -1,0 +1,20 @@
+#!/usr/bin/make -f
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/makefile.mk
+
+DEBVERS := $(shell dpkg-parsechangelog | sed -n -e 's/^Version: //p')
+VERSION := $(shell echo '$(DEBVERS)' | sed -e 's/^[[:digit:]]*://' -e 's/[~-].*//')
+
+configure/abootimg::
+	echo '#define VERSION_STR "$(VERSION)"' > version.h
+
+binary-install/abootimg::
+	dh_installman $(CURDIR)/debian/abootimg.1
+	install $(CURDIR)/abootimg $(CURDIR)/debian/abootimg/usr/bin
+	install -T $(CURDIR)/abootimg-pack-initrd $(CURDIR)/debian/abootimg/usr/bin
+	install -T $(CURDIR)/abootimg-unpack-initrd $(CURDIR)/debian/abootimg/usr/bin
+
+clean::
+	rm -rf files/agtl.egg-info
+	rm -rf tmp

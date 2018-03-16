@@ -1,0 +1,69 @@
+.TH ABOOTIMG 1
+.SH NAME
+abootimg \- manipulate Android Boot Images.
+.SH DESCRIPTION
+Tool to read/write/update android boot images
+
+.SH SYNOPSIS
+.B abootimg
+ \-i <bootimg>
+.br
+.B abootimg
+ \-x <bootimg> [<bootimg.cfg> [<kernel> [<ramdisk> [<secondstage>]]]]
+.br
+.B abootimg
+ \-u <bootimg> [\-c "param=value"] [\-f <bootimg.cfg>] [\-k <kernel>] [\-r <ramdisk>] [\-s <secondstage>]
+.br
+.B abootimg
+ \-\-create <bootimg> [\-c "param=value"] [\-f <bootimg.cfg>] \-k <kernel> \-r <ramdisk> [\-s <secondstage>]
+
+.SH OPTIONS
+.TP
+.B \-i
+print boot image information
+.TP
+.B \-x
+Extract a boot image
+.TP
+.B \-u
+Update a boot image
+.TP
+.B \-\-create
+Create a boot image
+
+.SS "Options for extracting boot images"
+.TP
+.B bootimg
+Existing boot image to use
+.TP
+.B bootimg.cfg
+Name for the bootimg.cfg file, defaults to bootimg.cfg
+.TP
+.B kernel
+Name for the kernel image, defaults to zImage
+.TP
+.B ramdisk
+Name for the ramdisk image, defaults to initrd.img
+.TP
+.B secondstage
+Name for the second-stage image, defaults to stage2.img
+
+.SS "Options for updating and creating boot images"
+.TP
+.B bootimg
+Existing boot image to use
+.TP
+.B \-c "param=value"
+Existing boot image to use
+.TP
+.B \-f <bootimg.cfg>
+Update bootimg.cfg with the named file
+.TP
+.B \-k <kernel>
+Update kernel with the named file
+.TP
+.B \-r <ramdisk>
+Update ramdisk with the named file
+.TP
+.B \-s <secondstage>
+Update secondstage image with the named file

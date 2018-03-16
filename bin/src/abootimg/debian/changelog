@@ -1,0 +1,27 @@
+abootimg (0.6-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Heiko Stuebner <mmind@debian.org>  Thu, 14 Jul 2011 20:54:33 +0200
+
+abootimg (0.5+git20110704-1) unstable; urgency=low
+
+  * New upstream snapshot
+  * Fix build on GNU-Hurd
+  * Bump standards to 3.9.2
+
+ -- Heiko Stuebner <mmind@debian.org>  Mon, 04 Jul 2011 18:34:17 +0200
+
+abootimg (0.5+git20110609-1) unstable; urgency=low
+
+  * New upstream release (Closes: #631719)
+  * Relax packaging license (Closes: #631720)
+  * Install helper scripts for initramfs handling
+
+ -- Heiko Stuebner <mmind@debian.org>  Sat, 02 Jul 2011 12:46:35 +0200
+
+abootimg (0.3-1) unstable; urgency=low
+
+  * Initial release (Closes: #612096)
+
+ -- Heiko Stuebner <mmind@debian.org>  Sat, 12 Feb 2011 12:04:10 +0100

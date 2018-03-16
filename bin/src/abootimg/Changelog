@@ -1,0 +1,32 @@
+2011/07/14 - v0.6
+
+	* fixes block device support, broken in v0.5
+	* fixes crash if ramdisk is bigger than kernel
+	* version.h no longer relies on git
+	* build fix on GNU Hurd
+
+2011/05/18 - v0.5
+
+	* add support for freebsd, cygwin, and osx
+	* explains why sanity check has failed
+	* print version number in -help
+	* pack-initrd -f support
+
+2011/02/17 - v0.4
+
+	* fix when page_size is null
+
+2010/12/08 - v0.3
+
+	* fix when updating kernel without ramdisk
+
+2010/11/28 - v0.2
+
+	* fix when updating ramdisk without the kernel
+	* fix --create on block device
+	* added pack-initrd and unpack-initrd helper tools
+
+2010/11/25 - v0.1
+
+	Initial release
+

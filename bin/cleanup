@@ -8,7 +8,9 @@ rm -rf tmp
 rm -f bin/simg2img
 rm -f bin/img2simg
 rm -f bin/aml_image_extractor
+rm -f bin/abootimg
 
 make -C bin/src/simg2img/ clean
+make -C bin/src/abootimg/ clean
 
 echo "Cleanup done"

@@ -12,4 +12,7 @@ gcc bin/src/aml_image_extractor.c -o bin/aml_image_extractor
 cp bin/src/simg2img/simg2img bin/
 cp bin/src/simg2img/img2simg bin/
 
+make -C bin/src/abootimg/
+cp bin/src/abootimg/abootimg bin/
+
 echo "Build done"

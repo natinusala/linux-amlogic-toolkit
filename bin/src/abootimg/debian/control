@@ -1,0 +1,20 @@
+Source: abootimg
+Section: admin
+Priority: extra
+Maintainer: Heiko Stuebner <mmind@debian.org>
+Build-Depends: debhelper (>= 7), cdbs (>= 0.4.49), libblkid-dev
+Standards-Version: 3.9.2
+Homepage: http://gitorious.org/ac100/abootimg
+
+Package: abootimg
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Tool to read/write/update android boot images
+ Android devices use a special partition format to boot any
+ operating system on the devices. These boot-images contain
+ a kernel image, a ramdisk, optionally a 2nd stage boot loader
+ and the commandline passed to the kernel when booting.
+ The original mkbootimg from Android can only create these images
+ where abootimg can also extract and modify them.
+ Handling android boot images is necessary when bringing other
+ operating systems to android devices.

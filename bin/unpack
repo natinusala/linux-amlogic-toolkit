@@ -12,10 +12,11 @@ then
             mkdir -p output/system
             mkdir -p output/image
             mkdir -p output/logo
+            mkdir -p output/boot
 
             echo "Unpacking image $1..."
             bin/aml_image_v2_packer -d $1 output/image
-
+       
             echo "Converting system.PARTITION to system.img..."
             bin/simg2img output/image/system.PARTITION output/image/system.img
 
@@ -24,6 +25,13 @@ then
 
             echo "Unpacking logo..."
             bin/logo_img_packer -d output/image/logo.PARTITION output/logo
+                          
+            echo "Unpacking boot..."
+            cp output/image/boot.PARTITION output/boot/boot.img
+            cd output/boot
+            ../../bin/abootimg -x boot.img
+            cd ../..
+            rm -f output/boot/boot.img
 
             echo "Done"
         else
