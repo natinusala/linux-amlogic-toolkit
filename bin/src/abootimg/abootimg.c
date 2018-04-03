@@ -718,7 +718,7 @@ void print_bootimg_info(t_abootimg* img)
   printf ("* kernel size       = %u bytes (%.2f MB)\n", kernel_size, (double)kernel_size/0x100000);
   printf ("  ramdisk size      = %u bytes (%.2f MB)\n", ramdisk_size, (double)ramdisk_size/0x100000);
   if (second_size)
-    printf ("  second stage size = %u bytes (%.2f MB)\n", ramdisk_size, (double)ramdisk_size/0x100000);
+    printf (" second stage size = %u bytes (%.2f MB)\n", second_size, (double)second_size/0x100000);
  
   printf ("\n* load addresses:\n");
   printf ("  kernel:       0x%08x\n", img->header.kernel_addr);
@@ -843,7 +843,7 @@ void extract_second(t_abootimg* img)
   if (!ssize) // Second Stage not present
     return;
 
-  unsigned n = (rsize + ksize + psize - 1) / psize;
+  unsigned n = (rsize + psize - 1)/psize + (ksize + psize - 1)/psize;
   unsigned soffset = (1+n)*psize;
 
   printf ("extracting second stage image in %s\n", img->second_fname);
