@@ -16,6 +16,7 @@ Allows to unpack and repack AMLogic Android images on Linux systems without usin
 # Dependencies
 * `zlib1g-dev` for `simg2img` and `img2simg`
 * `libblkid-dev` for `abootimg` (unpacking and repacking boot image)
+* the `i386` packages if needed (for the logo unpacking / repacking binary)
 
 # How to use it
 * Clone or download this repository
