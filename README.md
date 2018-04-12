@@ -44,6 +44,9 @@ Allows to unpack and repack AMLogic Android images on Linux systems without usin
 * When you have finished editing the files, run `./bin/repack output.img` to repack the image to `output.img`
 * Done !
 
+# Troubleshooting
+* If you have a `file not found` error when trying to unpack and repack the logo partition, install the `i386` libraries by following the accepted answer of this post : https://unix.stackexchange.com/questions/13391/getting-not-found-message-when-running-a-32-bit-binary-on-a-64-bit-system
+
 # Credits
 
 * Thanks to Magendanz and adg for the unpacking and repacking method
