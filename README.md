@@ -7,6 +7,7 @@ Allows to unpack and repack AMLogic Android images on Linux systems without usin
 * Mount and edit `system` partition
 * Unpack and repack `logo` partition (for bootup and upgrading logos)
 * Unpack and repack `boot` image and `initrd` ramdisk
+* Flash the image directly to a device without repacking it (faster than using the USB Burning Tool)
 * Works for Android 7
 * No need to unpack the image each time you want to use the tool
 
@@ -43,6 +44,8 @@ Allows to unpack and repack AMLogic Android images on Linux systems without usin
     * Don't rename the files in `output/boot.img`
     * If you extract and recreate the `initrd` ramdisk, its size will change and it will most likely break the boot image. To fix this, edit the `bootimg.cfg` file in `output/boot` to replicate the change in size (you can repack the image, let it fail and read the logs to see the new size).
 * When you have finished editing the files, run `./bin/repack output.img` to repack the image to `output.img`
+* Additionnaly, you can use `./bin/flash` to flash the image to a device through USB (you will need the udev rule, see https://github.com/Stane1983/aml-linux-usb-burn)
+    * The device type (`gxl`) is hardcoded into the flashing script, edit it if you're not using S905, S905X or S919
 * Done !
 
 # Troubleshooting
@@ -54,6 +57,7 @@ Allows to unpack and repack AMLogic Android images on Linux systems without usin
 * https://github.com/khadas/utils for the `aml_image_v2_packer` and `logo_img_packer` binaries
 * https://github.com/anestisb/android-simg2img for the `simg2img` tool
 * https://github.com/ggrandou/abootimg for the `abootimg` tool
+* https://github.com/Stane1983/aml-linux-usb-burn for the flashing tool
 
 
 

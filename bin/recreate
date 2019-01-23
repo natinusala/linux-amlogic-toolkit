@@ -1,0 +1,25 @@
+#!/bin/sh
+
+if [ -e output/image/system.img ]
+then
+        sync
+
+        echo "Repacking logo..."
+        rm -f output/image/logo.PARTITION
+        bin/logo_img_packer -r output/logo output/image/logo.PARTITION
+
+        echo "Converting back system.img to system.PARTITION..."
+        rm -f output/image/system.PARTITION
+        bin/img2simg output/image/system.img output/image/system.PARTITION
+
+        echo "Repacking boot..."
+        rm -f output/image/boot.PARTITION
+        bin/abootimg --create output/image/boot.PARTITION -f output/boot/bootimg.cfg -k output/boot/zImage -r output/boot/initrd.img
+
+        sync
+
+        echo "Done"
+else
+    echo "Please unpack an image before trying to repack it"
+fi
+

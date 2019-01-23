@@ -1,0 +1,18 @@
+#!/bin/sh
+
+if [ -e output/image/system.img ]
+then
+        sync
+
+        bin/recreate
+
+        echo "Flashing image to gxl device..."
+        bin/aml-linux-usb-burn/aml-flash --soc=gxl --wipe --reset=n --parts=all
+
+	sync
+
+        echo "Done"
+else
+    echo "Please unpack an image before trying to repack it"
+fi
+
