@@ -10,6 +10,7 @@ then
             sudo umount output/system
             rm -rf output
             mkdir -p output/system
+            mkdir -p output/vendor
             mkdir -p output/image
             mkdir -p output/logo
             mkdir -p output/boot
@@ -19,9 +20,15 @@ then
        
             echo "Converting system.PARTITION to system.img..."
             bin/simg2img output/image/system.PARTITION output/image/system.img
+            
+            echo "Converting vendor.PARTITION to vendor.img..."
+            bin/simg2img output/image/vendor.PARTITION output/image/vendor.img
 
             echo "Mounting system image..."
             sudo mount -t ext4 -o loop,rw output/image/system.img output/system
+            
+            echo "Mounting vendor image..."
+            sudo mount -t ext4 -o loop,rw output/image/vendor.img output/vendor
 
             echo "Unpacking logo..."
             bin/logo_img_packer -d output/image/logo.PARTITION output/logo

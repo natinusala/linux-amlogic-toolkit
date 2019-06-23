@@ -11,6 +11,10 @@ then
         echo "Converting back system.img to system.PARTITION..."
         rm -f output/image/system.PARTITION
         bin/img2simg output/image/system.img output/image/system.PARTITION
+        
+        echo "Converting back vendor.img to vendor.PARTITION..."
+        rm -f output/image/vendor.PARTITION
+        bin/img2simg output/image/vendor.img output/image/vendor.PARTITION
 
         echo "Repacking boot..."
         rm -f output/image/boot.PARTITION
