@@ -18,7 +18,7 @@ then
         
         echo "Repacking recovery..."
         rm -f output/image/recovery.PARTITION
-        bin/abootimg --create output/image/recovery.PARTITION -f output/recovery/recovery.cfg -k output/recovery/zImage -r output/recovery/initrd.img
+        bin/abootimg --create output/image/recovery.PARTITION -f output/recovery/bootimg.cfg -k output/recovery/zImage -r output/recovery/initrd.img
 
         echo "Repacking boot..."
         rm -f output/image/boot.PARTITION
