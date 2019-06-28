@@ -13,6 +13,7 @@ then
             mkdir -p output/vendor
             mkdir -p output/image
             mkdir -p output/logo
+            mkdir -p output/recovery
             mkdir -p output/boot
 
             echo "Unpacking image $1..."
@@ -32,6 +33,13 @@ then
 
             echo "Unpacking logo..."
             bin/logo_img_packer -d output/image/logo.PARTITION output/logo
+            
+            echo "Unpacking recovery..."
+            cp output/image/recovery.PARTITION output/recovery/recovery.img
+            cd output/recovery
+            ../../bin/abootimg -x recovery.img
+            cd ../..
+            rm -f output/recovery/recovery.img
                           
             echo "Unpacking boot..."
             cp output/image/boot.PARTITION output/boot/boot.img
