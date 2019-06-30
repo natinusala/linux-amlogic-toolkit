@@ -8,6 +8,7 @@ then
 	then
             echo "Cleaning up..."
             sudo umount output/system
+            sudo umount output/system
             rm -rf output
             mkdir -p output/system
             mkdir -p output/vendor
