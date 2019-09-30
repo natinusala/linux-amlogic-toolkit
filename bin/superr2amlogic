@@ -1,0 +1,13 @@
+#!/bin/sh
+
+
+
+    echo "Renaming system_new.img Image into Correct Format."
+    mv output/image/system_new.img output/image/system.img
+    echo "Renaming vendor_new.img Image into Correct Format."
+    mv output/image/vendor_new.img output/image/vendor.img
+    echo "Now Converting system/vendor into parse images."
+    bin/img2simg output/image/system.img output/image/system.PARTITION
+    bin/img2simg output/image/vendor.img output/image/vendor.PARTITION
+    
+    echo "Finished:.........."

@@ -1,0 +1,6 @@
+
+############## Commands ################
+
+./bin/superr2amlogic
+
+./bin/repack <NAME>.img

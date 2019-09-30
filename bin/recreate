@@ -16,9 +16,9 @@ then
         rm -f output/image/vendor.PARTITION
         bin/img2simg output/image/vendor.img output/image/vendor.PARTITION
         
-        echo "Repacking recovery..."
-        rm -f output/image/recovery.PARTITION
-        bin/abootimg --create output/image/recovery.PARTITION -f output/recovery/bootimg.cfg -k output/recovery/zImage -r output/recovery/initrd.img
+#        echo "Repacking recovery..."
+#        rm -f output/image/recovery.PARTITION
+#        bin/abootimg --create output/image/recovery.PARTITION -f output/recovery/bootimg.cfg -k output/recovery/zImage -r output/recovery/initrd.img
 
         echo "Repacking boot..."
         rm -f output/image/boot.PARTITION
