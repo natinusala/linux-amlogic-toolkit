@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -e output/image/system.img ]
+if [ -e output/image/system.img ] || [ -e output/image/system_new.img ]
 then
     if [ $# -eq 1 ]
     then
