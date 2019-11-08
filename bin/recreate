@@ -1,8 +1,22 @@
 #!/bin/sh
 
-if [ -e output/image/system.img ]
+if [ -e output/image/system.img ] || [ -e output/image/system_new.img ]
 then
         sync
+        
+        if [ -e output/image/system_new.img ]
+        then
+            sync
+            
+            echo "Kitchen: superr new raw image detected:.."
+            rm -f system.img vendor.img
+            echo "Renaming system_new.img Image into system.img."
+            mv output/image/system_new.img output/image/system.img
+            echo "Renaming vendor_new.img Image into vendor.img."
+            mv output/image/vendor_new.img output/image/vendor.img
+        else
+        echo "Not a kitchen: superr new raw image.."
+        fi
 
         echo "Repacking logo..."
         rm -f output/image/logo.PARTITION
