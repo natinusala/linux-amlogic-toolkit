@@ -9,7 +9,9 @@ then
             sync
             
             echo "Kitchen: superr new raw image detected:.."
-            rm -f system.img vendor.img
+            echo " "
+            echo "Removing: OLD system.img vendor.img system.PARTITION vendor.PARTITION"
+            rm -f system.img vendor.img system.PARTITION vendor.PARTITION
             echo "Renaming system_new.img Image into system.img."
             mv output/image/system_new.img output/image/system.img
             echo "Renaming vendor_new.img Image into vendor.img."
