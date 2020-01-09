@@ -1,8 +1,9 @@
 *.img
 *.apk
-output
+output*
 bin/abootimg
 bin/simg2img
 bin/img2simg
 bin/aml_image_extractor
 tmp
+/*HOLD*/
