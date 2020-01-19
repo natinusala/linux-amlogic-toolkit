@@ -2,7 +2,7 @@
 
 if [ -e bin/simg2img ]
 then
-    if [ $# -eq 1 ]
+    if [ $# -le 2 ]
     then
 	if [ -e $1 ]
 	then
