@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -e output/image/system.img ]
+if [ -e output/image/system.img ] || [ -e output/image/system_new.img ]
 then
     if [ $# -eq 1 ]
     then
@@ -13,7 +13,9 @@ then
 
 	sync
 
-        echo "Done"
+        echo "New Packed Image: $1"
+        echo ""
+        echo "Finished!!.."
     else
         echo "Usage: repack [output image]"
     fi

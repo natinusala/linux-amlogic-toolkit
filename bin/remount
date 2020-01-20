@@ -2,10 +2,22 @@
 
 echo "Unmounting previous image..."
 sync
-sudo umount output/system
+    sudo umount output/system
+    sudo umount output/vendor
+    sudo umount output/odm
+    sudo umount output/product
 
-echo "Remounting system image..."
-sudo mount -t ext4 -o loop,rw output/image/system.img output/system
+    echo "ReMounting system image..."
+    sudo mount -t ext4 -o loop,rw output/image/system.img output/system
+            
+    echo "ReMounting vendor image..."
+    sudo mount -t ext4 -o loop,rw output/image/vendor.img output/vendor
+            
+    echo "ReMounting odm image..."
+    sudo mount -t ext4 -o loop,rw output/image/odm.img output/odm
+            
+    echo "ReMounting product image..."
+    sudo mount -t ext4 -o loop,rw output/image/product.img output/product
 
 echo "Done"
 

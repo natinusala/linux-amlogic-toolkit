@@ -2,16 +2,25 @@
 
 if [ -e bin/simg2img ]
 then
-    if [ $# -eq 1 ]
+    if [ $# -le 2 ]
     then
 	if [ -e $1 ]
 	then
             echo "Cleaning up..."
             sudo umount output/system
+            sudo umount output/vendor
+            sudo umount output/odm
+            sudo umount output/product
             rm -rf output
             mkdir -p output/system
+            mkdir -p output/vendor
+            if [[ $2 == "full" ]]; then
+                mkdir -p output/odm
+                mkdir -p output/product
+            fi
             mkdir -p output/image
             mkdir -p output/logo
+            mkdir -p output/recovery
             mkdir -p output/boot
 
             echo "Unpacking image $1..."
@@ -19,12 +28,41 @@ then
        
             echo "Converting system.PARTITION to system.img..."
             bin/simg2img output/image/system.PARTITION output/image/system.img
+            
+            echo "Converting vendor.PARTITION to vendor.img..."
+            bin/simg2img output/image/vendor.PARTITION output/image/vendor.img
 
+            if [[ $2 == "full" ]]; then
+                echo "Converting odm.PARTITION to odm.img..."
+                bin/simg2img output/image/odm.PARTITION output/image/odm.img
+            
+                echo "Converting product.PARTITION to product.img..."
+                bin/simg2img output/image/product.PARTITION output/image/product.img
+            fi
+    
             echo "Mounting system image..."
             sudo mount -t ext4 -o loop,rw output/image/system.img output/system
+            
+            echo "Mounting vendor image..."
+            sudo mount -t ext4 -o loop,rw output/image/vendor.img output/vendor
+            
+            if [[ $2 == "full" ]]; then
+                echo "Mounting odm image..."
+                sudo mount -t ext4 -o loop,rw output/image/odm.img output/odm
+            
+                echo "Mounting product image..."
+                sudo mount -t ext4 -o loop,rw output/image/product.img output/product
+            fi
 
             echo "Unpacking logo..."
             bin/logo_img_packer -d output/image/logo.PARTITION output/logo
+            
+            echo "Unpacking recovery..."
+            cp output/image/recovery.PARTITION output/recovery/recovery.img
+            cd output/recovery
+            ../../bin/abootimg -x recovery.img
+            cd ../..
+            rm -f output/recovery/recovery.img
                           
             echo "Unpacking boot..."
             cp output/image/boot.PARTITION output/boot/boot.img

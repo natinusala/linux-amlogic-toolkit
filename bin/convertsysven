@@ -1,0 +1,32 @@
+#!/bin/sh
+
+if [ -e bin/simg2img ]
+then
+        if [ $1 = "img" ]; then
+            echo "Cleaning up..."
+            sudo umount output/system
+            sudo umount output/system
+            rm -rf output/system
+            rm -rf output/vendor
+            mkdir -p output/system
+            mkdir -p output/vendor
+    
+            echo "Converting system.PARTITION to system.img..."
+            bin/simg2img output/image/system.PARTITION output/image/system.img
+            
+            echo "Converting vendor.PARTITION to vendor.img..."
+            bin/simg2img output/image/vendor.PARTITION output/image/vendor.img
+            echo "Done"
+            
+    else if [ $1 = "simg" ]; then
+            echo "Converting back system.img to system.PARTITION..."
+            rm -f output/image/system.PARTITION
+            bin/img2simg output/image/system.img output/image/system.PARTITION
+        
+            echo "Converting back vendor.img to vendor.PARTITION..."
+            rm -f output/image/vendor.PARTITION
+            bin/img2simg output/image/vendor.img output/image/vendor.PARTITION
+        fi
+
+            echo "File not found: $1"
+fi

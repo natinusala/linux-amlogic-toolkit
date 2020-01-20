@@ -1,0 +1,18 @@
+#!/bin/sh
+
+if [ -e bin/abootimg ]
+then
+            echo "Cleaning output/boot.."
+            rm -rf output/boot
+            mkdir -p output/boot
+            echo "Unpacking boot..."
+            cp output/image/boot.PARTITION output/boot/boot.img
+            cd output/boot
+            ../../bin/abootimg -x boot.img
+            cd ../..
+            rm -f output/boot/boot.img
+
+            echo "Done"
+        else
+            echo "File not found: $1"
+fi
