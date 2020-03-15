@@ -8,11 +8,18 @@ then
 	then
             echo "Cleaning up..."
             sudo umount output/system
+            sudo umount output/vendor
+            sudo umount output/odm
+            sudo umount output/product
             rm -rf output
             mkdir -p output/system
+            mkdir -p output/vendor
+            mkdir -p output/odm
+            mkdir -p output/product
             mkdir -p output/image
             mkdir -p output/logo
             mkdir -p output/boot
+            mkdir -p output/recovery
 
             echo "Unpacking image $1..."
             bin/aml_image_v2_packer -d $1 output/image
@@ -23,6 +30,24 @@ then
             echo "Mounting system image..."
             sudo mount -t ext4 -o loop,rw output/image/system.img output/system
 
+            echo "Converting vendor.PARTITION to vendor.img..."
+            bin/simg2img output/image/vendor.PARTITION output/image/vendor.img
+
+            echo "Mounting vendor image..."
+            sudo mount -t ext4 -o loop,rw output/image/vendor.img output/vendor
+
+            echo "Converting odm.PARTITION to odm.img..."
+            bin/simg2img output/image/odm.PARTITION output/image/odm.img
+
+            echo "Mounting odm image..."
+            sudo mount -t ext4 -o loop,rw output/image/odm.img output/odm
+
+            echo "Converting product.PARTITION to product.img..."
+            bin/simg2img output/image/product.PARTITION output/image/product.img
+
+            echo "Mounting product image..."
+            sudo mount -t ext4 -o loop,rw output/image/product.img output/product
+
             echo "Unpacking logo..."
             bin/logo_img_packer -d output/image/logo.PARTITION output/logo
                           
@@ -32,6 +57,13 @@ then
             ../../bin/abootimg -x boot.img
             cd ../..
             rm -f output/boot/boot.img
+
+            echo "Unpacking recovery..."
+            cp output/image/recovery.PARTITION output/recovery/recovery.img
+            cd output/recovery
+            ../../bin/abootimg -x recovery.img
+            cd ../..
+            rm -f output/recovery/recovery.img
 
             echo "Done"
         else

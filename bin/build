@@ -3,6 +3,9 @@
 ./bin/cleanup
 
 mkdir -p output/system
+mkdir -p output/vendor
+mkdir -p output/product
+mkdir -p output/odm
 mkdir -p output/image
 mkdir -p output/logo
 
