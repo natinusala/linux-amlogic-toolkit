@@ -6,7 +6,8 @@ then
 	
 	echo "Extracting initrd ramdisk..."
 	cd output/initrd
-	cat ../boot/initrd.img | gunzip | cpio -vid
+	cat ../boot/zImage | gunzip | cpio -vid
+	#cat ../boot/initrd.img | gunzip | cpio -vid
 	cd ../..
 
 	echo "Done"

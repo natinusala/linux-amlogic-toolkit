@@ -4,4 +4,16 @@ echo "Unmounting system image..."
 sync
 sudo umount output/system
 
+echo "Unmounting vendor image..."
+sync
+sudo umount output/vendor
+
+echo "Unmounting odm image..."
+sync
+sudo umount output/odm
+
+echo "Unmounting product image..."
+sync
+sudo umount output/product
+
 echo "Done"

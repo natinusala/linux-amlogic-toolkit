@@ -163,7 +163,7 @@ void print_usage(void)
  "\n"
  "      bootimg has to be valid Android Boot Image, or the update will abort.\n"
  "\n"
- " abootimg --create <bootimg> [-c \"param=value\"] [-f <bootimg.cfg>] -k <kernel> -r <ramdisk> [-s <secondstage>]\n"
+ " abootimg --create <bootimg> [-c \"param=value\"] [-f <bootimg.cfg>] -k <kernel> [-r <ramdisk>] [-s <secondstage>]\n"
  "\n"
  "      create a new image from scratch.\n"
  "      if the boot image file is a block device, sanity check will be performed to avoid overwriting a existing\n"
@@ -291,7 +291,11 @@ int check_boot_img_header(t_abootimg* img)
 
   if (!(img->header.ramdisk_size)) {
     fprintf(stderr, "%s: ramdisk size is null\n", img->fname);
-    return 1;
+    /*
+     * On newer AOSP devices, system can be used as rootfs,
+     * resulting in no initrd being used. Thus this case should
+     * not be fatal.
+     */
   }
 
   unsigned page_size = img->header.page_size;
@@ -569,16 +573,18 @@ void update_images(t_abootimg *img)
   else if (img->kernel) {
     // if kernel is updated, copy the ramdisk from original image
     char* r = malloc(rsize);
-    if (!r)
-      abort_perror("");
-    if (fseek(img->stream, roffset, SEEK_SET))
-      abort_perror(img->fname);
-    size_t rb = fread(r, rsize, 1, img->stream);
-    if ((rb!=1) || ferror(img->stream))
-      abort_perror(img->fname);
-    else if (feof(img->stream))
-      abort_printf("%s: cannot read ramdisk\n", img->fname);
-    img->ramdisk = r;
+    if (rsize != 0) {
+      if (!r)
+        abort_perror("");
+      if (fseek(img->stream, roffset, SEEK_SET))
+        abort_perror(img->fname);
+      size_t rb = fread(r, rsize, 1, img->stream);
+      if ((rb!=1) || ferror(img->stream))
+        abort_perror(img->fname);
+      else if (feof(img->stream))
+        abort_printf("%s: cannot read ramdisk\n", img->fname);
+      img->ramdisk = r;
+    }
   }
 
   if (img->second_fname) {
@@ -718,7 +724,7 @@ void print_bootimg_info(t_abootimg* img)
   printf ("* kernel size       = %u bytes (%.2f MB)\n", kernel_size, (double)kernel_size/0x100000);
   printf ("  ramdisk size      = %u bytes (%.2f MB)\n", ramdisk_size, (double)ramdisk_size/0x100000);
   if (second_size)
-    printf (" second stage size = %u bytes (%.2f MB)\n", second_size, (double)second_size/0x100000);
+    printf ("  second stage size = %u bytes (%.2f MB)\n", ramdisk_size, (double)ramdisk_size/0x100000);
  
   printf ("\n* load addresses:\n");
   printf ("  kernel:       0x%08x\n", img->header.kernel_addr);
@@ -843,7 +849,7 @@ void extract_second(t_abootimg* img)
   if (!ssize) // Second Stage not present
     return;
 
-  unsigned n = (rsize + psize - 1)/psize + (ksize + psize - 1)/psize;
+  unsigned n = (rsize + ksize + psize - 1) / psize;
   unsigned soffset = (1+n)*psize;
 
   printf ("extracting second stage image in %s\n", img->second_fname);
@@ -932,7 +938,7 @@ int main(int argc, char** argv)
       break;
 
     case create:
-      if (!bootimg->kernel_fname || !bootimg->ramdisk_fname) {
+      if (!bootimg->kernel_fname) {
         print_usage();
         break;
       }

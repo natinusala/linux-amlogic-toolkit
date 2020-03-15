@@ -12,9 +12,45 @@ then
         rm -f output/image/system.PARTITION
         bin/img2simg output/image/system.img output/image/system.PARTITION
 
+        echo "Converting back vendor.img to vendor.PARTITION..."
+        rm -f output/image/vendor.PARTITION
+        bin/img2simg output/image/vendor.img output/image/vendor.PARTITION
+
+        echo "Converting back vendor.img to odm.PARTITION..."
+        rm -f output/image/odm.PARTITION
+        bin/img2simg output/image/odm.img output/image/odm.PARTITION
+
+        echo "Converting back product.img to product.PARTITION..."
+        rm -f output/image/product.PARTITION
+        bin/img2simg output/image/product.img output/image/product.PARTITION
+
         echo "Repacking boot..."
         rm -f output/image/boot.PARTITION
-        bin/abootimg --create output/image/boot.PARTITION -f output/boot/bootimg.cfg -k output/boot/zImage -r output/boot/initrd.img
+        if [ -e output/boot/initrd.img ]
+        then
+                if [ -e output/boot/stage2.img ]
+                then
+                        bin/abootimg --create output/image/boot.PARTITION -f output/boot/bootimg.cfg -k output/boot/zImage -r output/boot/initrd.img -s output/boot/stage2.img
+                else
+                        bin/abootimg --create output/image/boot.PARTITION -f output/boot/bootimg.cfg -k output/boot/zImage
+                fi
+        else
+                bin/abootimg --create output/image/boot.PARTITION -f output/boot/bootimg.cfg -k output/boot/zImage
+        fi
+
+        echo "Repacking recovery..."
+        rm -f output/image/recovery.PARTITION
+        if [ -e output/recovery/initrd.img ]
+        then
+                if [ -e output/recovery/stage2.img ]
+                then
+                        bin/abootimg --create output/image/recovery.PARTITION -f output/recovery/bootimg.cfg -k output/recovery/zImage -r output/recovery/initrd.img -s output/recovery/stage2.img
+                else
+                        bin/abootimg --create output/image/recovery.PARTITION -f output/recovery/bootimg.cfg -k output/recovery/zImage
+                fi
+        else
+                bin/abootimg --create output/image/recovery.PARTITION -f output/recovery/bootimg.cfg -k output/recovery/zImage
+        fi
 
         sync
 
