@@ -39,19 +39,21 @@ then
                 echo "Converting product.PARTITION to product.img..."
                 bin/simg2img output/image/product.PARTITION output/image/product.img
             fi
-    
-            echo "Mounting system image..."
-            sudo mount -t ext4 -o loop,rw output/image/system.img output/system
             
-            echo "Mounting vendor image..."
-            sudo mount -t ext4 -o loop,rw output/image/vendor.img output/vendor
+            if [[ $3 == "mount" ]]; then
+               echo "Mounting system image..."
+               sudo mount -t ext4 -o loop,rw output/image/system.img output/system
             
-            if [[ $2 == "full" ]]; then
-                echo "Mounting odm image..."
-                sudo mount -t ext4 -o loop,rw output/image/odm.img output/odm
+               echo "Mounting vendor image..."
+               sudo mount -t ext4 -o loop,rw output/image/vendor.img output/vendor
             
-                echo "Mounting product image..."
-                sudo mount -t ext4 -o loop,rw output/image/product.img output/product
+               if [[ $2 == "full" ]]; then
+                  echo "Mounting odm image..."
+                  sudo mount -t ext4 -o loop,rw output/image/odm.img output/odm
+            
+                  echo "Mounting product image..."
+                  sudo mount -t ext4 -o loop,rw output/image/product.img output/product
+               fi
             fi
 
             echo "Unpacking logo..."
