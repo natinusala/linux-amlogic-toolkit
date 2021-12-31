@@ -52,9 +52,14 @@ then
 #        rm -f output/image/recovery.PARTITION
 #        bin/abootimg --create output/image/recovery.PARTITION -f output/recovery/bootimg.cfg -k output/recovery/zImage -r output/recovery/initrd.img
 
-#        echo "Repacking boot..."
-#        rm -f output/image/boot.PARTITION
-#        bin/abootimg --create output/image/boot.PARTITION -f output/boot/bootimg.cfg -k output/boot/zImage -r output/boot/initrd.img
+        if [ -e output/boot/zImage ]
+        then
+        echo "Repacking boot..."
+        rm -f output/image/boot.PARTITION
+        bin/abootimg --create output/image/boot.PARTITION -f output/boot/bootimg.cfg -k output/boot/zImage -r output/boot/initrd.img
+        else
+        echo "Not RePacking Boot: Not needed.."
+        fi
 
         sync
 
