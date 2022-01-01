@@ -7,7 +7,7 @@ then
         bin/recreate
 
         echo "Flashing image to gxl device..."
-        bin/aml-linux-usb-burn/aml-flash --soc=gxl --wipe --reset=n --parts=all
+        bin/aml-flash-tool/aml-flash --soc=g12a --wipe --reset=n --parts=all
 
 	sync
 
@@ -15,4 +15,3 @@ then
 else
     echo "Please unpack an image before trying to repack it"
 fi
-
