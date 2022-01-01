@@ -76,22 +76,23 @@ then
             echo "Unpacking recovery..."
             cp output/image/recovery.PARTITION output/recovery/recovery.img
             cd output/recovery
-            ../../bin/abootimg -x recovery.img
+            ../../bin/AIK-Linux/unpackimg.sh --local --nosudo recovery.img
             cd ../..
             rm -f output/recovery/recovery.img
             fi
 
             if [ -f "output/image/boot.PARTITION" ]; then
-            echo "Unpacking boot..."
+            echo "Unpacking boot.img"
             cp output/image/boot.PARTITION output/boot/boot.img
             cd output/boot
-            ../../bin/abootimg -x boot.img
+            ../../bin/AIK-Linux/unpackimg.sh --local --nosudo boot.img
             cd ../..
             rm -f output/boot/boot.img
           else
+            echo "Unpacking boot_a.img"
             cp output/image/boot_a.PARTITION output/boot/boot_a.img
             cd output/boot
-            ../../bin/abootimg -x boot_a.img
+            ../../bin/AIK-Linux/unpackimg.sh --local --nosudo boot_a.img
             cd ../..
             rm -f output/boot/boot_a.img
             fi
