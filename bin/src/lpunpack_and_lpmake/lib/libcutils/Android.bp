@@ -1,0 +1,344 @@
+//
+// Copyright (C) 2008 The Android Open Source Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+// some files must not be compiled when building against Mingw
+// they correspond to features not used by our host development tools
+// which are also hard or even impossible to port to native Win32
+libcutils_nonwindows_sources = [
+    "fs.cpp",
+    "hashmap.cpp",
+    "multiuser.cpp",
+    "str_parms.cpp",
+]
+
+cc_library_headers {
+    name: "libcutils_headers",
+    vendor_available: true,
+    recovery_available: true,
+    host_supported: true,
+    apex_available: [
+        "//apex_available:platform",
+        "//apex_available:anyapex",
+    ],
+    min_sdk_version: "29",
+    native_bridge_supported: true,
+    export_include_dirs: ["include"],
+    target: {
+        vendor: {
+            override_export_include_dirs: ["include_vndk"],
+        },
+        linux_bionic: {
+            enabled: true,
+        },
+        windows: {
+            enabled: true,
+        },
+    },
+}
+
+// Socket specific parts of libcutils that are safe to statically link into an APEX.
+cc_library {
+    name: "libcutils_sockets",
+    vendor_available: true,
+    recovery_available: true,
+    host_supported: true,
+    native_bridge_supported: true,
+    apex_available: [
+        "//apex_available:platform",
+        "//apex_available:anyapex",
+    ],
+    min_sdk_version: "29",
+
+    export_include_dirs: ["include"],
+
+    shared_libs: ["liblog"],
+    srcs: ["sockets.cpp"],
+    target: {
+        linux_bionic: {
+            enabled: true,
+        },
+
+        not_windows: {
+            srcs: [
+                "socket_inaddr_any_server_unix.cpp",
+                "socket_local_client_unix.cpp",
+                "socket_local_server_unix.cpp",
+                "socket_network_client_unix.cpp",
+                "sockets_unix.cpp",
+            ],
+        },
+
+        // "not_windows" means "non-Windows host".
+        android: {
+            srcs: [
+                "android_get_control_file.cpp",
+                "socket_inaddr_any_server_unix.cpp",
+                "socket_local_client_unix.cpp",
+                "socket_local_server_unix.cpp",
+                "socket_network_client_unix.cpp",
+                "sockets_unix.cpp",
+            ],
+            static_libs: ["libbase"],
+        },
+
+        windows: {
+            host_ldlibs: ["-lws2_32"],
+            srcs: [
+                "socket_inaddr_any_server_windows.cpp",
+                "socket_network_client_windows.cpp",
+                "sockets_windows.cpp",
+            ],
+
+            enabled: true,
+            cflags: [
+                "-D_GNU_SOURCE",
+            ],
+        },
+    },
+}
+
+cc_test {
+    name: "libcutils_sockets_test",
+    test_suites: ["device-tests"],
+    static_libs: ["libbase", "libcutils_sockets"],
+    cflags: [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+    ],
+
+    srcs: ["sockets_test.cpp"],
+    target: {
+        android: {
+            srcs: [
+                "android_get_control_file_test.cpp",
+                "android_get_control_socket_test.cpp",
+            ],
+        },
+    },
+}
+
+cc_library {
+    name: "libcutils",
+    vendor_available: true,
+    vndk: {
+        enabled: true,
+        support_system_process: true,
+    },
+    recovery_available: true,
+    host_supported: true,
+    apex_available: [
+        "//apex_available:platform",
+        "//apex_available:anyapex",
+    ],
+    min_sdk_version: "29",
+    native_bridge_supported: true,
+    srcs: [
+        "config_utils.cpp",
+        "canned_fs_config.cpp",
+        "iosched_policy.cpp",
+        "load_file.cpp",
+        "native_handle.cpp",
+        "record_stream.cpp",
+        "strlcpy.c",
+        "threads.cpp",
+    ],
+
+    target: {
+        linux_bionic: {
+            enabled: true,
+        },
+        not_windows: {
+            srcs: libcutils_nonwindows_sources + [
+                "ashmem-host.cpp",
+                "fs_config.cpp",
+                "trace-host.cpp",
+            ],
+        },
+        windows: {
+            host_ldlibs: ["-lws2_32"],
+
+            srcs: [
+                "trace-host.cpp",
+            ],
+
+            enabled: true,
+            cflags: [
+                "-D_GNU_SOURCE",
+            ],
+        },
+        android: {
+            srcs: libcutils_nonwindows_sources + [
+                "android_reboot.cpp",
+                "ashmem-dev.cpp",
+                "fs_config.cpp",
+                "klog.cpp",
+                "partition_utils.cpp",
+                "properties.cpp",
+                "qtaguid.cpp",
+                "trace-dev.cpp",
+                "uevent.cpp",
+            ],
+        },
+
+        android_arm: {
+            sanitize: {
+                misc_undefined: ["integer"],
+            },
+        },
+        android_arm64: {
+            sanitize: {
+                misc_undefined: ["integer"],
+            },
+        },
+
+        android_x86: {
+            // TODO: This is to work around b/29412086.
+            // Remove once __mulodi4 is available and move the "sanitize" block
+            // to the android target.
+            sanitize: {
+                misc_undefined: [],
+            },
+        },
+
+        android_x86_64: {
+            sanitize: {
+                misc_undefined: ["integer"],
+            },
+        },
+
+        vendor: {
+            exclude_srcs: [
+                // qtaguid.cpp loads libnetd_client.so with dlopen().  Since
+                // the interface of libnetd_client.so may vary between AOSP
+                // releases, exclude qtaguid.cpp from the VNDK-SP variant.
+                "qtaguid.cpp",
+            ],
+        }
+    },
+
+    whole_static_libs: ["libcutils_sockets"],
+    shared_libs: [
+        "liblog",
+        "libbase",
+    ],
+    header_libs: [
+        "libbase_headers",
+        "libcutils_headers",
+        "libutils_headers",
+        "libprocessgroup_headers",
+    ],
+    export_header_lib_headers: [
+        "libcutils_headers",
+        "libprocessgroup_headers",
+    ],
+    local_include_dirs: ["include"],
+
+    cflags: [
+        "-Werror",
+        "-Wall",
+        "-Wextra",
+    ],
+}
+
+cc_defaults {
+    name: "libcutils_test_default",
+    srcs: [
+        "native_handle_test.cpp",
+        "sockets_test.cpp",
+    ],
+
+    target: {
+        android: {
+            srcs: [
+                "android_get_control_file_test.cpp",
+                "android_get_control_socket_test.cpp",
+                "ashmem_test.cpp",
+                "fs_config_test.cpp",
+                "multiuser_test.cpp",
+                "properties_test.cpp",
+                "sched_policy_test.cpp",
+                "str_parms_test.cpp",
+                "trace-dev_test.cpp",
+            ],
+        },
+
+        not_windows: {
+            srcs: [
+                "str_parms_test.cpp",
+            ],
+        },
+    },
+
+    cflags: [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+    ],
+}
+
+test_libraries = [
+    "libcutils",
+    "liblog",
+    "libbase",
+    "libjsoncpp",
+    "libprocessgroup",
+    "libcgrouprc",
+]
+
+cc_test {
+    name: "libcutils_test",
+    test_suites: ["device-tests"],
+    defaults: ["libcutils_test_default"],
+    host_supported: true,
+    shared_libs: test_libraries,
+    require_root: true,
+}
+
+cc_defaults {
+    name: "libcutils_test_static_defaults",
+    defaults: ["libcutils_test_default"],
+    static_libs: [
+        "libc",
+        "libcgrouprc_format",
+    ] + test_libraries,
+    stl: "libc++_static",
+    require_root: true,
+
+    target: {
+        android: {
+            static_executable: true,
+        },
+        windows: {
+            host_ldlibs: ["-lws2_32"],
+
+            enabled: true,
+        },
+    },
+}
+
+cc_test {
+    name: "libcutils_test_static",
+    test_suites: ["device-tests"],
+    defaults: ["libcutils_test_static_defaults"],
+}
+
+cc_test {
+    name: "KernelLibcutilsTest",
+    test_suites: ["general-tests", "vts"],
+    defaults: ["libcutils_test_static_defaults"],
+    test_config: "KernelLibcutilsTest.xml",
+}
