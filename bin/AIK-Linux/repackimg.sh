@@ -89,11 +89,11 @@ if [ -z "$(ls ramdisk/* 2>/dev/null)" ] && [ ! "$ramdiskcomp" = "empty" -a ! "$o
   exit 1;
 fi;
 
-clear;
-echo " ";
-echo "Android Image Kitchen - RepackImg Script";
-echo "by osm0sis @ xda-developers";
-echo " ";
+#clear;
+#echo " ";
+#echo "Android Image Kitchen - RepackImg Script";
+#echo "by osm0sis @ xda-developers";
+#echo " ";
 
 if [ ! -z "$(ls *-new.* 2>/dev/null)" ]; then
   echo "Warning: Overwriting existing files!";
@@ -409,4 +409,3 @@ fi;
 
 echo "Done!";
 exit 0;
-
