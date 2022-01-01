@@ -11,7 +11,10 @@ then
             sudo umount output/vendor
             sudo umount output/odm
             sudo umount output/product
+            echo "Deleting (output) Folder.."
             rm -rf output
+            echo "Creating New Directorys for unpacking.."
+            mkdir -p output/super
             mkdir -p output/system
             mkdir -p output/vendor
             if [[ $2 == "full" ]]; then
@@ -25,53 +28,73 @@ then
 
             echo "Unpacking image $1..."
             bin/aml_image_v2_packer -d $1 output/image
-       
-            echo "Converting system.PARTITION to system.img..."
-            bin/simg2img output/image/system.PARTITION output/image/system.img
-            
-            echo "Converting vendor.PARTITION to vendor.img..."
-            bin/simg2img output/image/vendor.PARTITION output/image/vendor.img
+
+            if [ -f "output/image/super.PARTITION" ]; then
+               echo "Converting super.PARTITION to super.img..."
+               bin/simg2img output/image/super.PARTITION output/image/super.img
+             else
+               echo "Converting system.PARTITION to system.img..."
+               bin/simg2img output/image/system.PARTITION output/image/system.img
+
+               echo "Converting vendor.PARTITION to vendor.img..."
+               bin/simg2img output/image/vendor.PARTITION output/image/vendor.img
+            fi
 
             if [[ $2 == "full" ]]; then
                 echo "Converting odm.PARTITION to odm.img..."
                 bin/simg2img output/image/odm.PARTITION output/image/odm.img
-            
+
                 echo "Converting product.PARTITION to product.img..."
                 bin/simg2img output/image/product.PARTITION output/image/product.img
             fi
-            
+
             if [[ $3 == "mount" ]]; then
                echo "Mounting system image..."
                sudo mount -t ext4 -o loop,rw output/image/system.img output/system
-            
+
                echo "Mounting vendor image..."
                sudo mount -t ext4 -o loop,rw output/image/vendor.img output/vendor
-            
+
                if [[ $2 == "full" ]]; then
                   echo "Mounting odm image..."
                   sudo mount -t ext4 -o loop,rw output/image/odm.img output/odm
-            
+
                   echo "Mounting product image..."
                   sudo mount -t ext4 -o loop,rw output/image/product.img output/product
                fi
             fi
 
+            if [ -f "output/image/super.img" ]; then
+              echo "Exteracting contents of super.img"
+              bin/lpunpack output/image/super.img output/super
+            fi
+
             echo "Unpacking logo..."
             bin/logo_img_packer -d output/image/logo.PARTITION output/logo
-            
+
+            if [ -f "output/image/recovery.PARTITION" ]; then
             echo "Unpacking recovery..."
             cp output/image/recovery.PARTITION output/recovery/recovery.img
             cd output/recovery
             ../../bin/abootimg -x recovery.img
             cd ../..
             rm -f output/recovery/recovery.img
-                          
+            fi
+
+            if [ -f "output/image/boot.PARTITION" ]; then
             echo "Unpacking boot..."
             cp output/image/boot.PARTITION output/boot/boot.img
             cd output/boot
             ../../bin/abootimg -x boot.img
             cd ../..
             rm -f output/boot/boot.img
+          else
+            cp output/image/boot_a.PARTITION output/boot/boot_a.img
+            cd output/boot
+            ../../bin/abootimg -x boot_a.img
+            cd ../..
+            rm -f output/boot/boot_a.img
+            fi
 
             echo "Done"
         else
@@ -79,6 +102,7 @@ then
         fi
     else
         echo "Usage: unpack [input image]"
+        echo "Options: (full) to convert odm, product."
     fi
 else
     echo "Please run the build script before using this tool"
