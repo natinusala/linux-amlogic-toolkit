@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ -e bin/simg2img ]
+then
+
+            echo "Cleaning up..."
+            sudo umount output/system
+            sudo umount output/system
+            

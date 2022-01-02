@@ -1,4 +1,20 @@
 //From https://www.cnx-software.com/2016/11/19/how-to-create-a-bootable-recovery-sd-card-for-amlogic-tv-boxes/
+// gcc aml-upgrade-package-extract.c -o aml-upgrade-package-extract
+// ./aml-upgrade-package-extract update-usb-burning-mode.img
+
+// /dev/sdX - fat32 sdcard
+
+// Make bootable Android update:
+
+// dd if=aml_sdc_burn.UBOOT bs=1 count=442 of=/dev/sdX
+// dd if=aml_sdc_burn.UBOOT seek=1 skip=1 bs=512 of=/dev/sdX
+// sync
+
+// dd if=aml_sdc_burn.UBOOT conv=fsync bs=1 count=442 of=/dev/sdX
+// dd if=aml_sdc_burn.UBOOT conv=fsync seek=1 skip=1 bs=512 of=/dev/sdX
+
+// cp -v aml_sdc_burn.{ini,UBOOT} [device-mount-point]
+// cp -v update-usb-burning-mode.img [device-mount-point]/aml_upgrade_package.img
 
 #include <errno.h>
 #include <inttypes.h>
@@ -6,48 +22,48 @@
 #include <stdlib.h>
 #include <string.h>
 #include <arpa/inet.h>
- 
+
 uint32_t convert(uint8_t *test, uint64_t loc) {
   return ntohl((test[loc] << 24) | (test[loc+1] << 16) | (test[loc+2] << 8) | test[loc+3]);
 }
- 
+
 void main (int argc, char **argv) {
   FILE *fileptr;
   uint8_t *buffer;
   long filelen;
- 
+
   FILE *f;
   char *filename;
   uint64_t record;
   uint64_t record_loc;
   uint64_t file_loc;
   uint64_t file_size;
- 
+
   if (argc <= 1) {
     printf("Usage: %s [firmware-file-name]\n", argv[0]);
     exit (0);
   }
- 
+
   fileptr = fopen(argv[1], "rb");
   fseek(fileptr, 0, SEEK_END);
   filelen = ftell(fileptr);
   rewind(fileptr);
- 
+
   buffer = (uint8_t *)malloc((filelen+1)*sizeof(uint8_t));
   fread(buffer, filelen, 1, fileptr);
   fclose(fileptr);
- 
+
   for (record = 0; record < (uint8_t)buffer[0x18]; record = record + 1){
     record_loc = 0x40 + (record * 0x240);
- 
+
     filename = (malloc(32));
     sprintf(filename,"tmp/%s.%s",(char *)&buffer[record_loc+0x120], (char *)&buffer[record_loc+0x20]);
 
     printf("    Extracting %s\n", filename);
- 
+
     file_loc = convert(buffer,record_loc+0x10);
     file_size = convert(buffer,record_loc+0x18);
- 
+
     f = fopen(filename, "wb");
     if (f == NULL) {
      printf("ERROR: could not open output\n");

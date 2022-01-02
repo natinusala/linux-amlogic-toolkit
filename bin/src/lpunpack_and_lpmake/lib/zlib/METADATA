@@ -1,0 +1,15 @@
+name: "zlib"
+description: "The Chromium fork of the zlib compression library."
+third_party {
+  url {
+    type: GIT
+    value: "https://chromium.googlesource.com/chromium/src/third_party/zlib/"
+  }
+  version: "b9b9a5af7cca2e683e5f2aead8418e5bf9d5a7d5"
+  license_type: NOTICE
+  last_upgrade_date {
+    year: 2020
+    month: 2
+    day: 7
+  }
+}

@@ -1,0 +1,8 @@
+name: "boringssl"
+description: "BoringSSL is a fork of OpenSSL that is designed to meet Google's needs."
+third_party {
+  url {
+    type: HOMEPAGE
+    value: "https://boringssl.googlesource.com/boringssl"
+  }
+}

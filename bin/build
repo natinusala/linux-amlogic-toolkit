@@ -6,13 +6,26 @@ mkdir -p output/system
 mkdir -p output/image
 mkdir -p output/logo
 
+echo "Building [simg2img]"
 make -C bin/src/simg2img/
+
+echo "Building [Aml_image_extractor]"
 gcc bin/src/aml_image_extractor.c -o bin/aml_image_extractor
 
-cp bin/src/simg2img/simg2img bin/
-cp bin/src/simg2img/img2simg bin/
+mv bin/src/simg2img/simg2img bin/
+mv bin/src/simg2img/img2simg bin/
 
+echo "Building [abootimg]"
 make -C bin/src/abootimg/
-cp bin/src/abootimg/abootimg bin/
+mv bin/src/abootimg/abootimg bin/
+
+echo "Building [lpunpack_and_lpmake Tools: lpadd, lpdump, lpflash, lpmake, lpunpack]"
+cd bin/src/lpunpack_and_lpmake
+./make.sh
+cd ../../..
+mv bin/src/lpunpack_and_lpmake/bin/* ./bin/
+rm -rf bin/src/lpunpack_and_lpmake/bin
+#rm -rf bin/src/lpunpack_and_lpmake/lib/lib
+
 
 echo "Build done"

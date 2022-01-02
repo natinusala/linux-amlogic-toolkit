@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# Check for required dialog program to be installed:
+command -v python2 >/dev/null 2>&1 || { echo >&2 "I require python 2.7, but it's not installed. Please install python 2.7. Aborting."; exit; }
+
+if [ -e bin/avb/avbtool ]
+then
+    if [ $# -eq 6 ]
+    then
+        sync
+        
+        echo "AVBv2:avbtool <original partition image name $1> <new partition image name $2> <partition name $3> <vbmeta image name $4> <algorithm name $5> <algorithm path $6>"
+#        python2 bin/avb/avbtool add_hash_footer --algorithm SHA256_RSA4096 --key  bin/avb/testkey_rsa4096.pem --image magisk-boot.img --partition_size $(wc -c < output/image/boot-original.img) --partition_name boot --output_vbmeta_image output/image/vbmeta.img
+        python2 bin/avb/avbtool add_hash_footer --algorithm $5 --key  $6 --image output/image/$2 --partition_size $(wc -c < output/image/$1) --partition_name $3 --output_vbmeta_image output/image/$4
+        
+        sync
+
+        echo "Done"
+    else
+        echo "Usage: avbtool <original partition image name> <new partition image name> <partition name> <vbmeta image name> <algorithm name> <algorithm path>"
+        echo "Example: ./bin/avbtool boot-original.img boot.img boot vbmeta.img SHA256_RSA4096 bin/avb/testkey_rsa4096.pem"
+    fi
+else
+    echo "Please make sure you use the correct command.."
+fi
+        

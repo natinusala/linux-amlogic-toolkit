@@ -1,0 +1,8 @@
+{
+  "presubmit": [
+    {
+      "name": "libjsonpbverify_test",
+      "host": true
+    }
+  ]
+}

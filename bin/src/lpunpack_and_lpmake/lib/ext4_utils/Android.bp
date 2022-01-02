@@ -1,0 +1,91 @@
+// Copyright 2010 The Android Open Source Project
+
+cc_library {
+    name: "libext4_utils",
+    host_supported: true,
+    recovery_available: true,
+    srcs: [
+        "ext4_utils.cpp",
+        "wipe.cpp",
+        "ext4_sb.cpp",
+    ],
+    // Various instances of dereferencing a type-punned pointer in extent.c
+    cflags: [
+        "-Werror",
+        "-fno-strict-aliasing",
+    ],
+    export_include_dirs: ["include"],
+    shared_libs: [
+        "libbase",
+        "libz",
+    ],
+
+    target: {
+        windows: {
+            host_ldlibs: ["-lws2_32"],
+            enabled: true,
+        },
+
+        android: {
+            shared_libs: [
+                "libbase",
+            ],
+
+            shared: {
+                cflags: ["-DREAL_UUID"],
+                shared_libs: [
+                    "libcutils",
+                    "libext2_uuid",
+                ],
+            },
+        },
+    },
+}
+
+python_binary_host {
+    name: "mkuserimg_mke2fs",
+    srcs: [
+        "mkuserimg_mke2fs.py",
+    ],
+
+    data: [
+        "mke2fs.conf",
+    ],
+
+    version: {
+        py2: {
+            enabled: true,
+            embedded_launcher: true,
+        },
+        py3: {
+            enabled: false,
+            embedded_launcher: false,
+        },
+    },
+
+    required: [
+        "mke2fs",
+        "e2fsdroid",
+    ],
+}
+
+prebuilt_etc {
+    name: "mke2fs.conf",
+    recovery_available: true,
+    src: "mke2fs.conf",
+}
+
+cc_binary_host {
+    name: "blk_alloc_to_base_fs",
+    srcs: ["blk_alloc_to_base_fs.cpp"],
+    shared_libs: ["libcutils"],
+    target: {
+        host: {
+            cflags: ["-DHOST"],
+        },
+    },
+    cflags: [
+        "-Wall",
+        "-Werror",
+    ],
+}
